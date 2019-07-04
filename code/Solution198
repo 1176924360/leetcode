@@ -1,0 +1,56 @@
+/**
+你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，
+如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警。
+给定一个代表每个房屋存放金额的非负整数数组，计算你在不触动警报装置的情况下，能够偷窃到的最高金额。
+*/
+
+package leetCode.cn.hdu;
+
+public class Rob {
+	public static void main(String[] args) {
+		int[] nums = new int[] { 5, 1, 3, 5, 2, 4, 3 };
+		int len = nums.length;
+		int[] memo = new int[len + 1];
+		int maxMoney = rob(nums, len);
+		int maxMoney1 = rob1(nums, len, memo);
+		int maxMoney2 = rob2(nums, len);
+		System.out.println(maxMoney);
+		System.out.println(maxMoney1);
+		System.out.println(maxMoney2);
+	}
+
+	// 动态规划
+	private static int rob2(int[] nums, int len) {
+		int[] dp = new int[len + 1];
+		dp[1] = nums[0];
+		dp[2] = Math.max(nums[1], nums[0]);
+		for (int i = 3; i <= len; i++) {
+			dp[i] = Math.max(nums[i - 1] + dp[i - 2], dp[i - 1]);
+		}
+		return dp[len];
+	}
+
+	// 带备忘录
+	private static int rob1(int[] nums, int len, int[] memo) {
+		if (len == 1)
+			return nums[0];
+		if (len == 2)
+			return Math.max(nums[1], nums[0]);
+		if (memo[len] != 0)
+			return memo[len];
+		memo[len] = Math.max(nums[len - 1] + rob1(nums, len - 2, memo),
+				rob1(nums, len - 1, memo));
+		return memo[len];
+	}
+
+	// 暴力解法
+	private static int rob(int[] nums, int len) {
+		if (len == 1)
+			return nums[0];
+		if (len == 2)
+			return Math.max(nums[1], nums[0]);
+		int m = Math
+				.max(nums[len - 1] + rob(nums, len - 2), rob(nums, len - 1));
+		return m;
+	}
+}
