@@ -1,0 +1,70 @@
+package leetCode.cn.hdu;
+
+import java.util.Arrays;
+
+/**
+ * 给定一个字符串，验证它是否是回文串，只考虑字母和数字字符，可以忽略字母的大小写。
+ * 
+ * 说明：本题中，我们将空字符串定义为有效的回文串。
+ * 
+ * 示例 1:
+ * 
+ * 输入: "A man, a plan, a canal: Panama" 输出: true 示例 2:
+ * 
+ * 输入: "race a car" 输出: false
+ * 
+ * @author 不是人民的好榜样
+ *
+ */
+public class Palindrome {
+
+	public static void main(String[] args) {
+		String s = "`l;`` 2o1 ??;l`";
+		boolean is = isPalindrome1(s);
+		System.out.println(is);
+	}
+
+	/*
+	 * 方法二：双指针
+	 * 将字符串s去除空格与特殊符号，得到s1
+	 * 建立两个指针，指针i指向s1的头部，j指向s1的尾部，并且i和j依次向中间靠
+	 * 只要在i与j向中间靠的过程中，发现其对呀的字符不相同，返回false
+	 * 当循环结束时，返回true
+	 */
+	private static boolean isPalindrome1(String s) {
+		if (s.length() == 0)
+			return true;
+		String s1 = s.toLowerCase().replaceAll(" ", "")
+				.replaceAll("[\\pP\\p{Punct}]", "");
+		for (int i = 0, j = s1.length() - 1; i < s1.length() / 2; i++, j--) {
+			if(s1.charAt(i) != s1.charAt(j))
+				return false;
+		}
+//		System.out.println(s1.charAt(0) == s1.charAt(4));
+		return true;
+	}
+
+	/*
+	 * 方法一:取出字符串s中的字母与数字，并将字母转化为小写，去除特殊字符,得s3
+	 * 建一个字符数组ch，在ch中装s的反着的字符串
+	 * 将字符数组转化为字符串，得s4
+	 * 比较s3与s4，相同返回true，不相同返回false
+	 */
+	private static boolean isPalindrome(String s) {
+		if (s.length() == 0)
+			return true;
+		String s1 = s.toLowerCase();
+		String s2 = s1.replaceAll(" ", "");
+		String s3 = s2.replaceAll("[\\pP\\p{Punct}]", "");
+		// System.out.println(s3);
+		char[] ch = new char[s3.length()];
+		for (int i = 0; i < s3.length(); i++) {
+			ch[s3.length() - 1 - i] = s3.charAt(i);
+		}
+		String s4 = new String(ch);
+		if (s3.equals(s4))
+			return true;
+		else
+			return false;
+	}
+}
